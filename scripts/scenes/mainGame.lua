@@ -1,23 +1,30 @@
 local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 
-scene.num = 0
-
 function scene:updateLevelCallback()
 return function(delta)
-   self.num = self.num + 1
-   self.text.text = scene.num
-
-   if self.num > 20 then
-      GameController.getInstance().clearAllCallbacks()
-      GameController.getInstance():stop()
-   end
+	scene.gameWorld:update(delta)
 end
 end
 
 function scene:createGameObjects()
-   self.text = display.newText(scene.view,'CUack',0,0,nil,15)
-   self.text.x,self.text.y = X*0.5,Y*0.5
+   --self.text = display.newText(scene.view,'CUack',0,0,nil,15)
+   --self.text.x,self.text.y = X*0.5,Y*0.5
+   local level = 1
+   self.gameWorld = GameWorld:new(level,self.view)
+
+   --[[
+   local obstacle = Obstacle:new(30,30)
+   obstacle.x,obstacle.y = 0,Y*0.0
+   self.gameWorld:addObstacle(obstacle)
+   obstacle.speed = Vector:new(5,5)
+   ]]
+
+   local programmer = Programmer:new(30,30,StageConstants.PROGRAMMER_SPEED)
+   programmer.x,programmer.y = 0,Y*0.9
+   self.gameWorld:addProgrammer(programmer)
+   programmer.speed = Vector:new(5,-5):unit():mul(StageConstants.PROGRAMMER_SPEED)
+   
 end
 
 --Methods

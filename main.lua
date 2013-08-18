@@ -10,6 +10,8 @@
       GameController = require 'scripts.controllers.GameController'
       GameWorld = require 'scripts.models.GameWorld'
          --Game Screen Models
+         Obstacle = require 'scripts.models.Obstacle'  
+         Programmer = require 'scripts.models.Programmer'
 
 --Cleaning logs
 logger:clean()
