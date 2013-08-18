@@ -1,6 +1,7 @@
 local Obstacle = {}
 
-function Obstacle:new(width,height)
+function Obstacle:new(width,height,programmer)
+	assert(programmer)
 	local obstacle = display.newGroup()
 
 	obstacle.body = display.newRect(obstacle,0,0,width,height)
@@ -11,9 +12,11 @@ function Obstacle:new(width,height)
 
 	obstacle.speed = Vector:new(0,0)
 	
-	obstacle.body:setStrokeColor(0,255,0)
 	obstacle.body.strokeWidth = 2
-	obstacle.body:setFillColor(0,255,0,0)
+	obstacle.body:setStrokeColor(programmer.colors[1],programmer.colors[2],programmer.colors[3])
+	obstacle.body:setFillColor(programmer.colors[1],programmer.colors[2],programmer.colors[3],0)
+	obstacle.programmerId = programmer.programmerId
+	
 
 	obstacle.alive = true
 	function obstacle:isAlive() return self.alive end

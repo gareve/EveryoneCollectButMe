@@ -12,10 +12,13 @@
          --Game Screen Models
          Obstacle = require 'scripts.models.Obstacle'  
          Programmer = require 'scripts.models.Programmer'
+         Hero = require 'scripts.models.Hero'
 
 --Cleaning logs
 logger:clean()
 logger:gameEvent('%s - %dx%d',system.getInfo("environment"),X,Y)
+
+__global_level = 1
 
 function startLevel()
     local storyboard = require "storyboard"   

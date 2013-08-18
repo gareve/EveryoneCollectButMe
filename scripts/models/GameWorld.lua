@@ -1,8 +1,9 @@
 local GameWorld = {}
 
-function GameWorld:new(level,view)
+function GameWorld:new(level,view,hero)
 	assert(level)
 	assert(view)
+	assert(hero)
 
 	local gameWorld = display.newGroup()
 	view:insert(gameWorld)
@@ -12,8 +13,27 @@ function GameWorld:new(level,view)
 	gameWorld.spawnTimeoutSetting = StageConstants['SPAWN_TIMEOUT_LEVEL_'..level]
 	gameWorld.spawnTimeout = 0--gameWorld.spawnTimeoutSetting
 
+	gameWorld.hero = hero
+	gameWorld.ids = 0
+
+	gameWorld.time = StageConstants['STAGE_TIME_LEVEL_' .. level]
+
+	function gameWorld:programmersWon()
+		for i=1,#self.programmers do
+			if self.programmers[i]:won() then
+				return assert(self.programmers[i].name)
+			end
+		end
+		return nil
+	end
+
+	function gameWorld:programmersLose()
+		return self.time <= 0
+	end
+
 	function gameWorld:update(delta)
 		self:cleanObstacles()
+		self.time = self.time - delta
 
 		for i=1,#self.obstacles do
 			self.obstacles[i]:update(delta)
@@ -47,6 +67,8 @@ function GameWorld:new(level,view)
 	end
 
 	function gameWorld:spawnObstacle()
+		if #self.programmers == 0 then return end
+
 		local x,y,speed
 		if math.random() <= 0.5 then
 			-- |
@@ -64,7 +86,9 @@ function GameWorld:new(level,view)
 
 		speed = Vector:new(math.random(),math.random()):unit():mul(self:getObstacleSpeed())
 
-		local obstacle = Obstacle:new(StageConstants.OBSTACLE_WIDTH,StageConstants.OBSTACLE_HEIGHT)
+		local rndIndex = math.random(1,#self.programmers)
+
+		local obstacle = Obstacle:new(StageConstants.OBSTACLE_WIDTH,StageConstants.OBSTACLE_HEIGHT,self.programmers[rndIndex])
 		obstacle.x,obstacle.y = x,y
 		obstacle.speed = speed
 
@@ -81,6 +105,8 @@ function GameWorld:new(level,view)
 	function gameWorld:addProgrammer(programmer)
 		logger:unitEvent('Added obstacle')
 		self:insert(programmer)
+		programmer.programmerId = self.ids
+		self.ids = self.ids + 1
 		table.insert(self.programmers,programmer)
 	end
 

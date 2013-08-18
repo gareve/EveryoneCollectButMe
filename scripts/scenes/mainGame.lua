@@ -4,14 +4,23 @@ local scene = storyboard.newScene()
 function scene:updateLevelCallback()
 return function(delta)
 	scene.gameWorld:update(delta)
+	scene:updateHUD()
 end
 end
 
 function scene:createGameObjects()
-   --self.text = display.newText(scene.view,'CUack',0,0,nil,15)
-   --self.text.x,self.text.y = X*0.5,Y*0.5
-   local level = 1
-   self.gameWorld = GameWorld:new(level,self.view)
+   self.timeText = display.newText(scene.view,'CUack',0,0,nil,15)
+   self.timeText:setReferencePoint(assert(display.BottomRightReferencePoint))
+   self.timeText.x,self.timeText.y = X,Y
+
+   local timeBox = display.newRect(scene.view,0,0,self.timeText.contentWidth,self.timeText.contentHeight)
+   timeBox:setReferencePoint(assert(display.BottomRightReferencePoint))
+   timeBox:setFillColor(255,255,255,40)
+   timeBox.x,timeBox.y = X,Y
+
+   local hero = Hero:new(StageConstants.HERO_RADIUS)
+   self.gameWorld = GameWorld:new(__global_level,self.view,hero)
+   hero.x,hero.y = X*0.5,Y*0.5
 
    --[[
    local obstacle = Obstacle:new(30,30)
@@ -20,11 +29,29 @@ function scene:createGameObjects()
    obstacle.speed = Vector:new(5,5)
    ]]
 
-   local programmer = Programmer:new(30,30,StageConstants.PROGRAMMER_SPEED)
-   programmer.x,programmer.y = 0,Y*0.9
-   self.gameWorld:addProgrammer(programmer)
-   programmer.speed = Vector:new(5,-5):unit():mul(StageConstants.PROGRAMMER_SPEED)
-   
+   self:loadProgrammers()
+end
+
+function scene:loadProgrammers()
+	local names = require('scripts.data.programmers')
+	for i=1,#names do 
+		local name = names[i]
+		logger:spawnEvent('New Programmer: ' .. name)
+
+		local x,y = math.random()*X,math.random()*Y
+		local goal = StageConstants['PROGRAMMER_GOAL_LEVEL_'..__global_level]
+
+		local programmer = Programmer:new(StageConstants.PROGRAMMER_WIDTH,StageConstants.PROGRAMMER_HEIGHT,StageConstants.PROGRAMMER_SPEED,name,goal)
+	   programmer.x,programmer.y = x,y
+	   programmer.speed = Vector:new(5,-5):unit():mul(StageConstants.PROGRAMMER_SPEED)
+
+	   self.gameWorld:addProgrammer(programmer)	   
+	end
+end
+
+function scene:updateHUD()
+	local time = self.gameWorld.time
+	self.timeText.text = string.format('%d:%d',time/60,time%60)
 end
 
 --Methods
