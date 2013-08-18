@@ -1,0 +1,3 @@
+local GameWorld = {}
+
+return GameWorld
