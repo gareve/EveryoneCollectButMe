@@ -18,3 +18,8 @@ If some player collect all their items, you will lose.
 
 The first level is easy, but can you beat the other two levels
 when the other players get a new power? The power of temporary vanishment.
+
+Credits
+========
+Game developed in 4 hours by Gareve
+Background source http://www.flickr.com/photos/texturex/8236402614/ 
