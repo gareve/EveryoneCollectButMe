@@ -141,4 +141,11 @@ function GeometricUtils:collideCircleRect2(center,ax,ay,bx,by)
    return false
 end
 
+function GeometricUtils:collideCircleCircle(cA,rA,cB,rB)
+	local p = cA.x - cB.x
+	local q = cA.y - cB.y
+
+	return math.sqrt(p*p + q*q) <= rA + rB
+end
+
 return GeometricUtils

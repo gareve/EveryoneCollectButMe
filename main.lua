@@ -18,13 +18,21 @@
 logger:clean()
 logger:gameEvent('%s - %dx%d',system.getInfo("environment"),X,Y)
 
-__global_level = 1
+__global_level = 2
+__global_programmer_winner = 'Cuack'
 
 function startLevel()
-    local storyboard = require "storyboard"   
-    --storyboard.gotoScene("scripts.scenes.scoreScene",{effect = "fade",time = 100})
+   local storyboard = require "storyboard"   
 
-	storyboard.gotoScene("scripts.scenes.mainGame",{effect = "fade",time = 100})   
+   storyboard.gotoScene("scripts.scenes.mainMenu",{effect = "fade",time = 100})
+   --storyboard.gotoScene("scripts.scenes.gameDescription",{effect = "fade",time = 100})
+   --storyboard.gotoScene("scripts.scenes.credits",{effect = "fade",time = 100})
+   --storyboard.gotoScene("scripts.scenes.winStage",{effect = "fade",time = 100})
+   --storyboard.gotoScene("scripts.scenes.loseStage",{effect = "fade",time = 100})
+
+	--storyboard.gotoScene("scripts.scenes.mainGame",{effect = "fade",time = 100})
 end
 
 startLevel()
+
+--Finished :)

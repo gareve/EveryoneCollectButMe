@@ -1,18 +1,14 @@
 local logger = {}
 local logPaths = system.pathForFile('coronablitz_',system.TemporaryDirectory)
 
-local isSimulator = true
-
 function logger:info(TAG,fmt,...)
    arg = {...}
    local logLine = string.format(tostring(fmt),unpack(arg))
    print(logLine)
 
-   if isSimulator then
-      local file = io.open(logPaths..TAG..'.log', "a")
-      file:write(logLine .. "\n")
-      file:close()
-   end
+   local file = io.open(logPaths..TAG..'.log', "a")
+   file:write(logLine .. "\n")
+   file:close()
 end
 
 function logger:gameEvent(fmt,...)  self:info('###',fmt,unpack({...})) end

@@ -39,8 +39,10 @@ function GameWorld:new(level,view,hero)
 			self.obstacles[i]:update(delta)
 		end
 		for i=1,#self.programmers do
-			self.programmers[i]:update(delta,self.obstacles)
+			self.programmers[i]:update(delta,self.obstacles,self.hero)
 		end
+
+		self.hero:update(delta)
 
 		self:updateSpawn(delta)
 	end
