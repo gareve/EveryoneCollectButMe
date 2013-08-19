@@ -22,4 +22,5 @@ when the other players get a new power? The power of temporary vanishment.
 Credits
 ========
 Game developed in 4 hours by Gareve
+
 Background source http://www.flickr.com/photos/texturex/8236402614/ 
